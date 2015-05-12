@@ -161,11 +161,11 @@ function train()
                        -- evaluate function for complete mini batch
                        for i = 1,#inputs do
                           -- estimate f
-							-- print(inputs[i])
+						--	print(inputs[i])
 							-- print(i)
-							-- print("Target: " .. targets[i])
+						--	 print("Target: " .. targets[i])
                           local output = model:forward(inputs[i])
-							 -- print(output)
+						--	  print(output)
                           local err = cfn:forward(output, targets[i])
                           f = f + err
 

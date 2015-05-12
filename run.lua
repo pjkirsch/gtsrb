@@ -4,9 +4,9 @@ require "torch"
 
 --dofile("scripts/loadTrain.lua")
 --dofile("scripts/loadTest.lua")
-trainData = torch.load('data/trainData.t7')
-validData = torch.load('data/validData.t7')
-testData = torch.load('data/testData.t7')
+trainData = torch.load('data/trainDataGrey.t7')
+validData = torch.load('data/validDataGrey.t7')
+testData = torch.load('data/testDataGrey.t7')
 
 dofile("scripts/models/mlp-toy2.lua")
 

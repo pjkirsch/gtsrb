@@ -7,7 +7,7 @@ require 'nn'
 -- Define parameters
 height = 32
 width = 32
-depth = 3
+depth = 1
 
 nInputs = height*width*depth
 nHL1 = 30
@@ -15,7 +15,7 @@ nOutputs = 43
 
 -- Define model
 model = nn.Sequential() -- The NN model is considered as a sequence of functions
-model:add(nn.Reshape(nInputs)) -- Reshape features from 3*32*32 to 3072*1
+model:add(nn.Reshape(nInputs, false)) -- Reshape features from 1*32*32 to 1024*1
 model:add(nn.Linear(nInputs, nHL1)) -- Connection weights
 model:add(nn.ReLU()) -- Hyperbolic tangent non-linear function
 model:add(nn.Linear(nHL1, nOutputs)) -- Connection weights
