@@ -17,7 +17,7 @@ nOutputs = 43
 model = nn.Sequential() -- The NN model is considered as a sequence of functions
 model:add(nn.Reshape(nInputs)) -- Reshape features from 3*32*32 to 3072*1
 model:add(nn.Linear(nInputs, nHL1)) -- Connection weights
-model:add(nn.Tanh()) -- Hyperbolic tangent non-linear function
+model:add(nn.ReLU()) -- Hyperbolic tangent non-linear function
 model:add(nn.Linear(nHL1, nOutputs)) -- Connection weights
 model:add(nn.LogSoftMax())
 

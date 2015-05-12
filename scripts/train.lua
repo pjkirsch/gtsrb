@@ -165,7 +165,7 @@ function train()
 							-- print(i)
 							-- print("Target: " .. targets[i])
                           local output = model:forward(inputs[i])
-							-- print(output)
+							 -- print(output)
                           local err = cfn:forward(output, targets[i])
                           f = f + err
 

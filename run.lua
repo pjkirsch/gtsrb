@@ -8,7 +8,7 @@ trainData = torch.load('data/trainData.t7')
 validData = torch.load('data/validData.t7')
 testData = torch.load('data/testData.t7')
 
-dofile("scripts/models/mlp.lua")
+dofile("scripts/models/mlp-toy2.lua")
 
 dofile("scripts/train.lua")
 dofile("scripts/valid.lua")
