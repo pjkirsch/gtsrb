@@ -20,7 +20,7 @@ nTest = testData.data:size(1)
 -- test function
 function test()
 	-- Open file containing results
-	local resultFile = assert(io.open("results/hyp_epoch".. epoch .. ".csv", "w"))
+	local resultFile = assert(io.open(paths.concat(opt.save, "hyp_epoch".. epoch .. ".csv"), "w"))
 	print("Test results file opened.")
 
 	-- write file header
