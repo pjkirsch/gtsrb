@@ -33,9 +33,11 @@ if not opt then
    cmd:option('-plot', false, 'live plot')
    cmd:option('-optimization', 'SGD', 'optimization method: SGD | ASGD | CG | LBFGS')
    cmd:option('-learningRate', 1e-3, 'learning rate at t=0')
+   cmd:option('-learningRateDecay', 1e-7, 'learning rate decay')
    cmd:option('-batchSize', 1, 'mini-batch size (1 = pure stochastic)')
    cmd:option('-weightDecay', 0, 'weight decay (SGD only)')
    cmd:option('-momentum', 0, 'momentum (SGD only)')
+   cmd:option('-nesterov', false, 'use Nesterov Accelerated Gradient (SGD only)')
    cmd:option('-t0', 1, 'start averaging at t0 (ASGD only), in nb of epochs')
    cmd:option('-maxIter', 2, 'maximum nb of iterations for CG and LBFGS')
    cmd:text()
@@ -92,7 +94,9 @@ elseif opt.optimization == 'SGD' then
       learningRate = opt.learningRate,
       weightDecay = opt.weightDecay,
       momentum = opt.momentum,
-      learningRateDecay = 1e-7
+      nesterov = opt.nesterov,
+      --dampening = 0,
+      learningRateDecay = opt.learningRateDecay
    }
    optimMethod = optim.sgd
 
@@ -195,11 +199,10 @@ function train()
 
    -- time taken
    time = sys.clock() - time
-   time = time / nTrain
-   print("\n==> time to learn 1 sample = " .. (time*1000) .. 'ms')
+   print("\n==> time to learn 1 sample = " .. (time/nTrain*1000) .. 'ms')
 
    -- print confusion matrix
- print(confusion)
+   print(confusion)
 
    -- update logger/plot
    trainLogger:add{['% mean class accuracy (train set)'] = confusion.totalValid * 100}
