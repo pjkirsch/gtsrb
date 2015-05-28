@@ -17,6 +17,22 @@ neural network able to classify German traffic sign images (43 classes):
 * boost accuracy by experimenting the multi-scale architecture,
 * compare with the results obtained in matching mode (i.e use the features with a distance-based search).
 
+## Repo
+
+### Info
+This repository has been forked from the Moodstocks/gtsrb repository. It contains the code used to approach the GTSRB challenge as suggest in "Goal" above.
+
+### Execution
+To execute this code,
+* Download the GTSRB dataset using the "download.sh" script:
+```bash
+> ./download.sh
+```
+* Execute one of the "run-\*.lua" scripts using torch7. Please check the scripts to see the available options. Example:
+```lua
+> th run-cnnDropOut2.lua -save results-cnn-do2 -optimization SGD -learningRate 1e-3 -learningRateDecay 1e-7 -momentum 0.9
+```
+
 ## Paper
 
 [Traffic Sign Recognition with Multi-Scale Convolutional Networks](http://computer-vision-tjpn.googlecode.com/svn/trunk/documentation/reference_papers/2-sermanet-ijcnn-11-mscnn.pdf), by Yann LeCun et al.
