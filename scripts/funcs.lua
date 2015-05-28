@@ -27,8 +27,13 @@ function classId2num(id)
 	return id-1
 end
 
--- Rescale pixel input features from [0,256] to [-2,2] which is more appropriate for tanh activation function
-function rescalePixFeat(pixel)
-	return (pixel/64 - 2)
+-- Check if a file exists
+function fileExists(path)
+	local file = io.open(path, "r")
+	if file ~= nil then 
+		io.close(file)
+		return true
+	else
+		retrun false
+	end
 end
-
