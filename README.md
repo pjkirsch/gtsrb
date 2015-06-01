@@ -33,6 +33,11 @@ To execute this code,
 > th run-cnnDropOut2.lua -save results-cnn-do2 -optimization SGD -learningRate 1e-3 -learningRateDecay 1e-7 -momentum 0.9
 ```
 
+To test the results after a given iteration (here iteration 5), use the script "scripts/eval.lua" as follow:
+```lua
+> th scripts/eval.lua results-cnn-do2/hyp_epoch5.csv data/GT-final_test.csv
+```
+
 ## Paper
 
 [Traffic Sign Recognition with Multi-Scale Convolutional Networks](http://computer-vision-tjpn.googlecode.com/svn/trunk/documentation/reference_papers/2-sermanet-ijcnn-11-mscnn.pdf), by Yann LeCun et al.
