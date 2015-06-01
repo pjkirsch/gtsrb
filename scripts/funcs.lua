@@ -1,5 +1,4 @@
 -- Split function, copied from http://stackoverflow.com/questions/1426954/split-string-in-lua (accessed 2015-04-27)
-
 function split(inputstr, sep)
 	if sep == nil then
 		sep = "%s"
@@ -34,6 +33,6 @@ function fileExists(path)
 		io.close(file)
 		return true
 	else
-		retrun false
+		return false
 	end
 end

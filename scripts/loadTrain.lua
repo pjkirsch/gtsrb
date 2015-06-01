@@ -12,15 +12,18 @@ local path = 'data/GTSRB/Final_Training/Images/'
 -- Get number of images in the dataset
 local nbImg = tonumber(io.popen('find ' .. path .. ' -type f -name "*.ppm" | wc -l'):read("*all"))
 
-nbTrain = nbImg - 43*30
+local nbTrain = nbImg - 43*30
 trainData = {
 	data = torch.Tensor(nbTrain, 3, 32, 32),
 	labels = {},
+	size = function() return trainData.data:size(1) end
 }
-nbValid = 43*30
+
+local nbValid = 43*30
 validData = {
 	data = torch.Tensor(nbValid, 3, 32, 32),
 	labels = {},
+	size = function() return validData.data:size(1) end
 }
 -- Sample counters
 local trainCnt = 1

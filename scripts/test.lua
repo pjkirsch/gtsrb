@@ -1,12 +1,5 @@
 -- This script is mostly based on  the one provided by Clement Farabet for Torch tutorial (test for supervised case)
 
-----------------------------------------------------------------------
--- This script implements a test procedure, to report accuracy
--- on the test data. Nothing fancy here...
---
--- Clement Farabet
-----------------------------------------------------------------------
-
 require 'torch'   -- torch
 require 'xlua'    -- xlua provides useful tools, like progress bars
 require 'optim'   -- an optimization package, for online and batch methods
@@ -15,8 +8,7 @@ require 'scripts/funcs'
 ----------------------------------------------------------------------
 
 print '==> defining test procedure'
-
-nTest = testData.data:size(1)
+local nTest = testData.size()
 -- test function
 function test()
 	-- Open file containing results
@@ -28,12 +20,6 @@ function test()
 
    -- local vars
    local time = sys.clock()
-
-   -- averaged param use?
-   if average then
-      cachedparams = parameters:clone()
-      parameters:copy(average)
-   end
 
    -- set model to evaluate mode (for modules that differ in training and testing, like Dropout)
    model:evaluate()
@@ -59,16 +45,10 @@ function test()
    time = time / nTest
    print("\n==> time to test 1 sample = " .. (time*1000) .. 'ms')
 
-   -- averaged param use?
-   if average then
-      -- restore parameters
-      parameters:copy(cachedparams)
-   end
-   
 	-- Close test results file
 	resultFile:close()
 	print("Test results file closed.")
 	
-   -- next iteration:
+   -- Reset confusion matrix
    confusion:zero()
 end

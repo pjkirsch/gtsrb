@@ -1,20 +1,5 @@
 -- This script is mostly the one provided by Clement Farabet for Torch tutorial
 
-----------------------------------------------------------------------
--- This script demonstrates how to define a training procedure,
--- irrespective of the model/loss functions chosen.
---
--- It shows how to:
---   + construct mini-batches on the fly
---   + define a closure to estimate (a noisy) loss
---     function, as well as its derivatives wrt the parameters of the
---     model to be trained
---   + optimize the function, according to several optmization
---     methods: SGD, L-BFGS.
---
--- Clement Farabet
-----------------------------------------------------------------------
-
 require 'torch'   -- torch
 require 'xlua'    -- xlua provides useful tools, like progress bars
 require 'optim'   -- an optimization package, for online and batch methods
@@ -25,15 +10,13 @@ if not opt then
    print '==> processing options'
    cmd = torch.CmdLine()
    cmd:text()
-   cmd:text('SVHN Training/Optimization')
-   cmd:text()
    cmd:text('Options:')
    cmd:option('-save', 'results', 'subdirectory to save/log experiments in')
    cmd:option('-visualize', false, 'visualize input data and weights during training')
    cmd:option('-plot', false, 'live plot')
-   cmd:option('-optimization', 'SGD', 'optimization method: SGD | ASGD | CG | LBFGS')
+   cmd:option('-optimization', 'SGD', 'optimization method: SGD | CG | LBFGS')
    cmd:option('-learningRate', 1e-3, 'learning rate at t=0')
-   cmd:option('-learningRateDecay', 1e-7, 'learning rate decay')
+   cmd:option('-learningRateDecay', 1e-7, 'learning rate decay (SGD only)')
    cmd:option('-batchSize', 1, 'mini-batch size (1 = pure stochastic)')
    cmd:option('-weightDecay', 0, 'weight decay (SGD only)')
    cmd:option('-momentum', 0, 'momentum (SGD only)')
@@ -57,7 +40,7 @@ print '==> defining some tools'
 -- classes
 classes = {'1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30','31','32','33','34','35','36','37','38','39','40','41','42','43'}
 
-nTrain = trainData.data:size(1)
+nTrain = trainData.size()
 
 -- This matrix records the current confusion across classes
 confusion = optim.ConfusionMatrix(classes)
@@ -99,14 +82,6 @@ elseif opt.optimization == 'SGD' then
       learningRateDecay = opt.learningRateDecay
    }
    optimMethod = optim.sgd
-
-elseif opt.optimization == 'ASGD' then
-   optimState = {
-      eta0 = opt.learningRate,
-      t0 = nbTrain * opt.t0
-   }
-   optimMethod = optim.asgd
-
 else
    error('unknown optimization method')
 end
@@ -127,7 +102,7 @@ function train()
    model:training()
 
    -- shuffle at each epoch
-   shuffle = torch.randperm(#trainData.labels)
+   local shuffle = torch.randperm(#trainData.labels)
 
    -- do one epoch
    print('==> doing epoch on training data:')
@@ -165,11 +140,7 @@ function train()
                        -- evaluate function for complete mini batch
                        for i = 1,#inputs do
                           -- estimate f
-						--	print(inputs[i])
-							-- print(i)
-						--	 print("Target: " .. targets[i])
                           local output = model:forward(inputs[i])
-						--	  print(output)
                           local err = cfn:forward(output, targets[i])
                           f = f + err
 
@@ -190,11 +161,7 @@ function train()
                     end
 
       -- optimize on current mini-batch
-      if optimMethod == optim.asgd then
-         _,_,average = optimMethod(feval, parameters, optimState)
-      else
-         optimMethod(feval, parameters, optimState)
-      end
+      optimMethod(feval, parameters, optimState)
    end
 
    -- time taken
@@ -217,5 +184,6 @@ function train()
    print('==> saving model to '..filename)
    torch.save(filename, model)
 
+   -- Reset confusion matrix
    confusion:zero()
 end

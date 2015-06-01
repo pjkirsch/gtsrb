@@ -1,12 +1,5 @@
 -- This script is mostly the one provided by Clement Farabet for Torch tutorial
 
-----------------------------------------------------------------------
--- This script implements a test procedure, to report accuracy
--- on the validation data. Nothing fancy here...
---
--- Clement Farabet
-----------------------------------------------------------------------
-
 require 'torch'   -- torch
 require 'xlua'    -- xlua provides useful tools, like progress bars
 require 'optim'   -- an optimization package, for online and batch methods
@@ -16,7 +9,7 @@ require 'optim'   -- an optimization package, for online and batch methods
 -- Log results to files
 validLogger = optim.Logger(paths.concat(opt.save, 'valid.log'))
 
-nValid = validData.data:size(1)
+nValid = validData.size()
 
 print '==> defining validation procedure'
 
@@ -24,12 +17,6 @@ print '==> defining validation procedure'
 function valid()
    -- local vars
    local time = sys.clock()
-
-   -- averaged param use?
-   if average then
-      cachedparams = parameters:clone()
-      parameters:copy(average)
-   end
 
    -- set model to evaluate mode (for modules that differ in training and testing, like Dropout)
    model:evaluate()
@@ -49,10 +36,6 @@ function valid()
       -- valid sample
       local pred = model:forward(input)
       confusion:add(pred, target)
-	--	print('Target: ' .. target)
-	--	print('Prediction: ')
-	--	local _,predClass = pred:max(1)
-	--	print(predClass)
    end
 
    -- timing
@@ -70,12 +53,6 @@ function valid()
       validLogger:plot()
    end
 
-   -- averaged param use?
-   if average then
-      -- restore parameters
-      parameters:copy(cachedparams)
-   end
-   
-   -- next iteration:
+   -- Reset confusion matrix
    confusion:zero()
 end

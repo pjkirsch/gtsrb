@@ -11,12 +11,12 @@ local path = 'data/GTSRB/Final_Test/Images/'
 local csvPath = 'data/GT-final_test.csv'
 
 -- Get number of images in the dataset
-local nbImg = tonumber(io.popen('find ' .. path .. ' -type f -name "*.ppm" | wc -l'):read("*all"))
+local nbTest = tonumber(io.popen('find ' .. path .. ' -type f -name "*.ppm" | wc -l'):read("*all"))
 
-nbTest = nbImg
 testData = {
 	data = torch.Tensor(nbTest, 1, 32, 32),
 	labels = {},
+	size = function() return testData.data:size(1) end
 }
 -- Sample counters
 local testCnt = 1
