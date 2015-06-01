@@ -30,7 +30,7 @@ To execute this code,
 ```
 * Execute one of the "run-\*.lua" scripts using torch7. Please check the scripts to see the available options. Example:
 ```lua
-> th run-cnnDropOut2.lua -save results-cnn-do2 -optimization SGD -learningRate 1e-3 -learningRateDecay 1e-7 -momentum 0.9
+> th run-cnnDropOut2.lua -save results-cnn-do2 -optimization SGD -learningRate 1e-3 -learningRateDecay 1e-7 -momentum 0.9 -plot
 ```
 
 To test the results after a given iteration (here iteration 5), use the script "scripts/eval.lua" as follow:
